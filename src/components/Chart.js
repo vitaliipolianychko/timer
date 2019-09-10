@@ -4,105 +4,104 @@ import { BarChart, Legend, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'rec
 import TimerContainer from './TimerContainer';
 import NavTabs from './Tabs';
 
-const data = [
+const test = [
   {
-    name: '0',
-    uv: 800,
+    id: 0,
+    minutes: 0,
   },
   {
-    name: '1',
-    uv: 4000,
+    id: 1,
+    minutes: 0,
   },
   {
-    name: '2',
-    uv: 3000,
+    id: 2,
+    minutes: 0,
   },
   {
-    name: '3',
-    uv: 2000,
+    id: 3,
+    minutes: 0,
   },
   {
-    name: '4',
-    uv: 2780,
+    id: 4,
+    minutes: 0,
   },
   {
-    name: '5',
-    uv: 1890,
+    id: 5,
+    minutes: 0,
   },
   {
-    name: '6',
-    uv: 2390,
+    id: 6,
+    minutes: 0,
   },
   {
-    name: '7',
-    uv: 3490,
+    id: 7,
+    minutes: 0,
   },
   {
-    name: '8',
-    uv: 4000,
+    id: 8,
+    minutes: 0,
   },
   {
-    name: '9',
-    uv: 4000,
+    id: 9,
+    minutes: 0,
   },
   {
-    name: '10',
-    uv: 4000,
+    id: 10,
+    minutes: 0,
   },
   {
-    name: '11',
-    uv: 4000,
+    id: 11,
+    minutes: 0,
   },
   {
-    name: '12',
-    uv: 1950,
+    id: 12,
+    minutes: 0,
   },
   {
-    name: '13',
-    uv: 2500,
+    id: 13,
+    minutes: 0,
   },
   {
-    name: '14',
-    uv: 2390,
+    id: 14,
+    minutes: 0,
   },
   {
-    name: '15',
-    uv: 3490,
+    id: 15,
+    minutes: 0,
   },
   {
-    name: '16',
-    uv: 4000,
+    id: 16,
+    minutes: 0,
   },
   {
-    name: '17',
-    uv: 4000,
+    id: 17,
+    minutes: 0,
   },
   {
-    name: '18',
-    uv: 4000,
+    id: 18,
+    minutes: 0,
   },
   {
-    name: '19',
-    uv: 4000,
+    id: 19,
+    minutes: 0,
   },
   {
-    name: '20',
-    uv: 1950,
+    id: 20,
+    minutes: 0,
   },
   {
-    name: '21',
-    uv: 2500,
+    id: 21,
+    minutes: 0,
   },
   {
-    name: '22',
-    uv: 4000,
+    id: 22,
+    minutes: 0,
   },
   {
-    name: '23',
-    uv: 4000,
+    id: 23,
+    minutes: 0,
   },
 ];
-
 function Chart(props) {
   const info = props.DataTasks.map((task, index) => {
     const timeStart = new Date(task.time_start);
@@ -110,36 +109,61 @@ function Chart(props) {
     const time = { index, timeStart, timeEnd };
     return time;
   });
-  const data123 = info.map(item => {
+  info.map(item => {
     for (let i = 0; i < 24; i++) {
-      if (item.timeStart.getHours() === i) {
+      if (item.timeStart.getHours() === test[i].id) {
         let minutesInHour;
         const hourStart = item.timeStart.getHours();
         const hourEnd = item.timeEnd.getHours();
         const minutesStart = item.timeStart.getMinutes();
         const minutesEnd = item.timeEnd.getMinutes();
         const minutes = Math.floor((item.timeEnd.getTime() - item.timeStart.getTime()) / 60000);
-        if (minutes > 60) {
-          minutesInHour = 60 - minutesStart;
+        if (hourStart === hourEnd && minutes < 60) {
+          test[i].minutes = test[i].minutes + minutes;
+
         }
-        return { i, minutes, minutesStart, minutesEnd, hourStart, hourEnd, minutesInHour };
+        if (hourStart !== hourEnd && minutes < 60) {
+          const minutesInHour = 60 - minutesStart;
+          test[i].minutes = test[i].minutes + minutesInHour;
+          const minutesLeft = minutes - minutesInHour;
+          test[hourEnd].minutes = test[hourEnd].minutes + minutesLeft;
+        }
+        if (minutes > 60) {
+          const minutesInHour = 60 - minutesStart;
+          const minutesLeft = minutes - minutesInHour;
+          // считаем часы чтобы знать во сколько следующих итераций записать по 60 минут
+          const countHour = Math.floor(minutesLeft / 60);
+          if (countHour !== 0) {
+            for (let j = hourStart + 1; j < j + countHour; j++) {
+              if (j > 23) {
+                test[j - 23].minutes = 60;
+              }
+              test[j].minutes = 60;
+            }
+          }
+          test[i].minutes = test[i].minutes + minutesInHour;
+          minutesLeft %= 60;
+          if (minutesLeft !== 0) {
+            test[hourEnd].minutes = test[hourEnd].minutes + minutesLeft;
+          }
+        }
       }
     }
   });
-  console.log(data123);
+  console.log(test);
 
   return (
     <div>
       <TimerContainer />
       <div style={{ width: '1100px', marginLeft: 'auto', marginRight: 'auto', marginTop: '2%' }}>
         <NavTabs />
-        <BarChart width={1100} height={250} data={data}>
+        <BarChart width={1100} height={250} data={test}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="id" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="uv" fill="#82ca9d" />
+          <Bar dataKey="minutes" fill="#82ca9d" />
         </BarChart>
       </div>
     </div>

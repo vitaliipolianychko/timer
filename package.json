@@ -1,7 +1,7 @@
 {
   "name": "timer",
   "version": "0.1.0",
-  "homepage": "http://vitaliipolianychko.github.io/timer",
+  "homepage": "http://vitaliipolianychko.github.io/timer/",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.3.3",
