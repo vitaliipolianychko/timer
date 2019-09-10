@@ -13,7 +13,7 @@ import {withRouter} from 'react-router-dom';
   return (
     <AppBar position="static">
       <Tabs
-        value={location.pathname === '/tasks' ? 'tasks' : 'graphics'}
+        value={location.pathname === '/timer/tasks' ? 'tasks' : 'graphics'}
         centered
         variant="fullWidth"
         onChange={handleChangeTab}
