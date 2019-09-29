@@ -55,7 +55,7 @@ function Task(props) {
           </Typography>
         </div>
       ) : (
-        <Typography variant="h5" color="primary" align="center" className={classes.task}>
+        <Typography variant="h5" color="primary" align="left" className={classes.task}>
           {' '}
           Task with this ID does not exist{' '}
         </Typography>

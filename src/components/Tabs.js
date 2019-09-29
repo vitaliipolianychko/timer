@@ -11,10 +11,11 @@ function NavTabs(props) {
     const { history } = props;
     history.push(value);
   };
+  const { history } = props;
   return (
     <AppBar position="static">
       <Tabs
-        value={location.pathname === '/timer/tasks' ? 'tasks' : 'graphics'}
+        value={history.location.pathname === '/tasks' ? 'tasks' : 'graphics'}
         centered
         variant="fullWidth"
         onChange={handleChangeTab}

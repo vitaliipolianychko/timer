@@ -10,7 +10,7 @@ import TasksLog from './components/tasksLog';
 export const renderTasks = state => {
   ReactDOM.render(
     <Provider store={store}>
-      <HashRouter basename="/timer/">
+      <HashRouter basename="/">
         <Switch>
           <Route exact path="/" render={() => <Redirect to="/tasks" />} />
           <Route exact path="/tasks" component={TasksLog} />
